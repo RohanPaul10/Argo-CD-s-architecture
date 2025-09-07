@@ -1,0 +1,12 @@
+35  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+   36  kubectl create namespace argocd
+   37  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+   38  curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+   39  sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+   40  rm argocd-linux-amd64
+   41  kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+   42  kubectl get svc argocd-server -n argocd -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
+   43  kubectl get all -n argocd
+   44  argocd admin initial-password -n argocd
+   45  argocd login a6b4c207a291a442a954365dbe895c6e-1311078298.us-east-2.elb.amazonaws.com
+   46  argocd account update-password
